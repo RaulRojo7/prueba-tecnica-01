@@ -7,10 +7,10 @@ module.exports.getToDo = async (req, res) => {
 
 module.exports.saveToDo = async (req, res) => {
 
-    const {text} = req.body
+    const {text, status} = req.body
 
     ToDoModel
-    .create({text})
+    .create({text, status})
     .then((data) => {
         console.log('Added...');
         console.log(data);

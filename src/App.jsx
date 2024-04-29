@@ -1,37 +1,51 @@
 
 import { useEffect, useState } from 'react'
 import './App.css'
-import { ToDoList } from './components/ToDoList'
+ 
 import { addToDo, getAllToDo } from './utils/HandleApi'
+import ToDoList from './components/ToDoList'
+import AddTask from './components/AddTask'
 
 function App() {
   
-  const [toDo, setToDo] = useState([])
-  const [text, setText] = useState("")
-  const [isUpadating, setIsUpdating] = useState(false)
+   const [toDo, setToDo] = useState([])
+   const [text, setText] = useState("")
+   const [isUpadating, setIsUpdating] = useState(false)
 
-  useEffect(() => {
-    getAllToDo(setToDo)
-  }, [] )
+   const [modal, setModal] = useState(false)
 
-  
+   const toggle = () =>{
+    setModal(!modal)
+}
+
+   useEffect(() => {
+     getAllToDo(setToDo)
+
+     
+   }, [] )
+
+  const saveTask = () => {
+    setModal(false)
+    // getAllToDo(setToDo)
+  }
+
   return (
-    <div className='App'>
-      <div className='container'>
-        <h1>TODO LIST</h1>
-        <div className='top'>
-          <input type="text" placeholder='Agregar tarea'
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          />
-          <div className='add' onClick={ () => addToDo(text, setText, setToDo) }>Add Task</div>
-        </div>
-        <div className='list'>
-          {toDo.map((item) => <ToDoList key = {item._id} text = {item.text}/>)}
+    <>
+    <div className='header text-center'>
+                <h3>TODO LIST</h3>
+                <button className='btn btn-primary mt-2' id= "addButton" onClick={() => setModal(true)}>Add task</button>
+            </div>
+            <div className='task-container'>
+            <div className='list'>
+             {toDo.map((item) => <ToDoList key = {item._id} text = {item.text} idT =  {item._id} setToDo = {setToDo} />)}
+             <AddTask toggle = {toggle} modal = {modal} save = {saveTask} setToDo = {setToDo}  />
           
         </div>
-      </div>
-    </div>
+            </div>
+    
+    
+     
+    </>
   )
 }
 
